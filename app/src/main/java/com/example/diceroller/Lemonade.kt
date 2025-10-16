@@ -99,7 +99,7 @@ fun LemonadeImage(modifier: Modifier = Modifier) {
                 }
                 .background(
                     color = softYellow,
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(40.dp)
                 )
                 .padding(12.dp)
                 .sizeIn(maxWidth = 200.dp, maxHeight = 200.dp)

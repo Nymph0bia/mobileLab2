@@ -30,7 +30,7 @@ data class Artwork(
     val author: String
 )
 
-class ForthActivity : ComponentActivity() {
+class FourthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

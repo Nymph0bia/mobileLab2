@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DiceRoller">
         <activity
-            android:name=".ForthActivity"
+            android:name=".FourthActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.DiceRoller">

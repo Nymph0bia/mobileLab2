@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.diceroller.ui.theme.DiceRollerTheme
+import androidx.compose.ui.platform.LocalConfiguration
 
 
 data class Artwork(
@@ -40,7 +41,6 @@ class FourthActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun ArtGalleryApp(modifier: Modifier = Modifier) {
     val artworks = listOf(
@@ -49,80 +49,171 @@ fun ArtGalleryApp(modifier: Modifier = Modifier) {
         Artwork(R.drawable.william_chyr_manifold_garden, "Manifold Garden", "William Chyr (2015)")
     )
 
-    val buttonColor = Color(0xFF4CAF50) // Material Green 500
+    val buttonColor = Color(0xFF4CAF50)
     val buttonDisabledColor = Color(0xFFA5D6A7)
     var currentIndex by remember { mutableStateOf(0) }
     val current = artworks[currentIndex]
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color.LightGray)
-                .padding(12.dp)
-                .shadow(elevation = 10.dp, shape = RoundedCornerShape(16.dp))
-        ) {
-            Image(
-                painter = painterResource(current.imageResId),
-                contentDescription = current.title,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .wrapContentSize()
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = current.title,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
-        )
-
-        Text(
-            text = current.author,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
+    if (isLandscape) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = { if (currentIndex > 0) currentIndex-- },
-                enabled = currentIndex > 0,
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = buttonColor,
-                    disabledContainerColor = buttonDisabledColor,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White.copy(alpha = 0.7f)
-                )) {
-                Text("Previous")
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.LightGray)
+                        .padding(12.dp)
+                        .shadow(elevation = 10.dp, shape = RoundedCornerShape(16.dp))
+                ) {
+                    Image(
+                        painter = painterResource(current.imageResId),
+                        contentDescription = current.title,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.wrapContentSize()
+                    )
+                }
             }
 
-            Button(
-                onClick = { if (currentIndex < artworks.size - 1) currentIndex++ },
-                enabled = currentIndex < artworks.size - 1,
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = buttonColor,
-                    disabledContainerColor = buttonDisabledColor,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White.copy(alpha = 0.7f)
-                )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("Next")
+                Text(
+                    text = current.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = current.author,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = { if (currentIndex > 0) currentIndex-- },
+                        enabled = currentIndex > 0,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = buttonColor,
+                            disabledContainerColor = buttonDisabledColor,
+                            contentColor = Color.White,
+                            disabledContentColor = Color.White.copy(alpha = 0.7f)
+                        )
+                    ) {
+                        Text("Previous")
+                    }
+
+                    Button(
+                        onClick = { if (currentIndex < artworks.size - 1) currentIndex++ },
+                        enabled = currentIndex < artworks.size - 1,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = buttonColor,
+                            disabledContainerColor = buttonDisabledColor,
+                            contentColor = Color.White,
+                            disabledContentColor = Color.White.copy(alpha = 0.7f)
+                        )
+                    ) {
+                        Text("Next")
+                    }
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.LightGray)
+                    .padding(12.dp)
+                    .shadow(elevation = 10.dp, shape = RoundedCornerShape(16.dp))
+            ) {
+                Image(
+                    painter = painterResource(current.imageResId),
+                    contentDescription = current.title,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.wrapContentSize()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = current.title,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = current.author,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Button(
+                    onClick = { if (currentIndex > 0) currentIndex-- },
+                    enabled = currentIndex > 0,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = buttonColor,
+                        disabledContainerColor = buttonDisabledColor,
+                        contentColor = Color.White,
+                        disabledContentColor = Color.White.copy(alpha = 0.7f)
+                    )
+                ) {
+                    Text("Previous")
+                }
+
+                Button(
+                    onClick = { if (currentIndex < artworks.size - 1) currentIndex++ },
+                    enabled = currentIndex < artworks.size - 1,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = buttonColor,
+                        disabledContainerColor = buttonDisabledColor,
+                        contentColor = Color.White,
+                        disabledContentColor = Color.White.copy(alpha = 0.7f)
+                    )
+                ) {
+                    Text("Next")
+                }
             }
         }
     }
